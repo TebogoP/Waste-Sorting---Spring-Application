@@ -1,0 +1,2 @@
+# Waste Sorting - Spring Application
+ The **Waste Sorting Application** is a Spring Boot-based backend system developed for Enviro365 to promote sustainable waste management practices. It allows users to interact with APIs for managing waste categories, disposal guidelines, and recycling tips. This application is designed to support a mobile frontend, enabling users to make environmentally conscious decisions.
