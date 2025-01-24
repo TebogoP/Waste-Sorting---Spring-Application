@@ -67,8 +67,7 @@ class WasteCategoryTest {
         // Positive Test Case
         WasteCategory category = new WasteCategory(6, "Paper Waste",
                 "Discarded paper materials such as newspapers, cardboard, and office paper.");
-        String expectedString = "WasteCategory {id=6, name=Paper Waste, description=Discarded paper materials such as newspapers, cardboard, and office paper.}";
-
+        String expectedString = "{\"id\": 6, \"name\": \"Paper Waste\", \"description\": \"Discarded paper materials such as newspapers, cardboard, and office paper.\"}";
         assertEquals(expectedString, category.toString());
     }
 }
