@@ -92,6 +92,26 @@ class WasteCategoryRepositoryTest {
         categories.add(newCategory); // Expected result after creation
         verify(mockJSONFileServices, times(1)).saveToFile(categories, FILE_PATH);
     }
+    @Test
+    void testCreateCategoryAlreadyExists() throws IOException {
+        // Arrange an immutable list
+        List<WasteCategory> categories = List.of(
+                new WasteCategory(1, "Plastic Waste", "Non-biodegradable synthetic materials."),
+                new WasteCategory(3, "Glass Waste", "Recyclable glass materials.")
+        );
+        when(mockJSONFileServices.readFromFile(FILE_PATH, WasteCategory.class)).thenReturn(categories);
+
+        WasteCategory duplicateCategory = new WasteCategory(3, "Duplicate Glass Waste", "Duplicate recyclable glass materials.");
+
+        //Asserts
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            wasteCategoryRepository.create(duplicateCategory);
+        });
+
+        assertEquals("302 FOUND \"WasteCategory with ID 3 already exist\"", exception.getMessage());
+        verify(mockJSONFileServices, never()).saveToFile(anyList(), eq(FILE_PATH));
+    }
+
 
     @Test
     void testCreateInvalidCategory() {
