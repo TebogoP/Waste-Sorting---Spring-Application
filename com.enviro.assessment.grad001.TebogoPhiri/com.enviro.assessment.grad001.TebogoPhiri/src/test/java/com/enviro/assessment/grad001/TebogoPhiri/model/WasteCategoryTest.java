@@ -1,12 +1,27 @@
 package com.enviro.assessment.grad001.TebogoPhiri.model;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class WasteCategoryTest {
+
+    private Validator validator;
+
+    @BeforeEach
+    void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
 
     @Test
     void testValidWasteCategoryCreation() {
@@ -14,6 +29,10 @@ class WasteCategoryTest {
         WasteCategory category = new WasteCategory(1, "Organic Waste",
                 "Biodegradable waste originating from plants, animals, or other organic materials.");
 
+        Set<ConstraintViolation<WasteCategory>> violations = validator.validate(category);
+
+        // Assert no violations
+        assertTrue(violations.isEmpty(), "Valid WasteCategory should have no validation errors.");
         assertEquals(1, category.getId());
         assertEquals("Organic Waste", category.getName());
         assertEquals("Biodegradable waste originating from plants, animals, or other organic materials.", category.getDescription());
@@ -25,6 +44,10 @@ class WasteCategoryTest {
         WasteCategory category = new WasteCategory(2, "Electronic Waste (E-Waste)",
                 "Old or discarded electronic devices such as computers and mobile phones.");
 
+        Set<ConstraintViolation<WasteCategory>> violations = validator.validate(category);
+
+        // Assert no violations
+        assertTrue(violations.isEmpty(), "Valid WasteCategory should have no validation errors.");
         assertEquals(2, category.getId());
         assertEquals("Electronic Waste (E-Waste)", category.getName());
         assertEquals("Old or discarded electronic devices such as computers and mobile phones.", category.getDescription());
@@ -36,7 +59,19 @@ class WasteCategoryTest {
         WasteCategory category = new WasteCategory(3, null,
                 "Waste generated during the extraction of minerals and metals.");
 
-        assertNull(category.getName());
+        Set<ConstraintViolation<WasteCategory>> violations = validator.validate(category);
+
+        // Assert validation errors
+        boolean hasNameError = false;
+        for (ConstraintViolation<WasteCategory> violation : violations) {
+            if (violation.getMessage().equals("Name cannot be blank")) {
+                hasNameError = true;
+                break;
+            }
+        }
+
+        assertFalse(violations.isEmpty(), "WasteCategory with null name should have validation errors.");
+        assertTrue(hasNameError, "Expected validation error for missing name.");
         assertEquals(3, category.getId());
         assertEquals("Waste generated during the extraction of minerals and metals.", category.getDescription());
     }
@@ -46,9 +81,21 @@ class WasteCategoryTest {
         // Negative Test Case: Description is empty
         WasteCategory category = new WasteCategory(4, "Metal Waste", "");
 
+        Set<ConstraintViolation<WasteCategory>> violations = validator.validate(category);
+
+        // Assert validation errors
+        boolean hasDescriptionError = false;
+        for (ConstraintViolation<WasteCategory> violation : violations) {
+            if (violation.getMessage().equals("Description cannot be blank")) {
+                hasDescriptionError = true;
+                break;
+            }
+        }
+
+        assertFalse(violations.isEmpty(), "WasteCategory with empty description should have validation errors.");
+        assertTrue(hasDescriptionError, "Expected validation error for empty description.");
         assertEquals(4, category.getId());
         assertEquals("Metal Waste", category.getName());
-        assertTrue(category.getDescription().isEmpty());
     }
 
     @Test
@@ -57,7 +104,20 @@ class WasteCategoryTest {
         WasteCategory category = new WasteCategory(-5, "Plastic Waste",
                 "Non-biodegradable waste made from synthetic polymers like plastic bottles and bags.");
 
-        assertTrue(category.getId() < 0, "ID should not be negative");
+        // Validate the category
+        Set<ConstraintViolation<WasteCategory>> violations = validator.validate(category);
+
+        // Assert validation error for negative ID
+        boolean hasIdError = false;
+        for (ConstraintViolation<WasteCategory> violation : violations) {
+            if (violation.getMessage().equals("ID should not be negative")) {
+                hasIdError = true;
+                break;
+            }
+        }
+
+        assertFalse(violations.isEmpty(), "WasteCategory with a negative ID should have validation errors.");
+        assertTrue(hasIdError, "Expected validation error for negative ID.");
         assertEquals("Plastic Waste", category.getName());
         assertEquals("Non-biodegradable waste made from synthetic polymers like plastic bottles and bags.", category.getDescription());
     }
