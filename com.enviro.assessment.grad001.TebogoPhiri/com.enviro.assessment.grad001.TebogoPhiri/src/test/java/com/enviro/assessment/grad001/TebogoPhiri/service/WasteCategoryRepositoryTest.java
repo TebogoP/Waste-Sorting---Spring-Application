@@ -183,4 +183,16 @@ class WasteCategoryRepositoryTest {
         });
         assertEquals("404 NOT_FOUND \"WasteCategory with ID 999 not found\"", exception.getMessage());
     }
+    @Test
+    void testGetAllCategoriesEmptyFile() throws IOException {
+        // Arrange: Simulate empty file content
+        when(mockJSONFileServices.readFromFile(FILE_PATH, WasteCategory.class)).thenReturn(new ArrayList<>());
+
+        List<WasteCategory> result = wasteCategoryRepository.getAllCategories();
+
+        // Asserts
+        assertNotNull(result, "Result should not be null.");
+        assertTrue(result.isEmpty(), "Result should be an empty list for an empty file.");
+    }
+
 }
