@@ -31,9 +31,17 @@ public class JSONFileServices<T> {
      */
     public List<T> readFromFile(String filePath, Class<T> clazz) throws IOException {
         File file = new File(filePath);
+
+        // If the file does not exist, return an empty list
         if (!file.exists()) {
+            return new ArrayList<T>();
+        }
+        // If the file is empty, return an empty list
+        if (file.length() == 0) {
             return new ArrayList<>();
         }
+
+        // Parse the JSON content into a List<T>
         CollectionType listType = objectMapper.getTypeFactory()
                 .constructCollectionType(ArrayList.class, clazz);
         return objectMapper.readValue(file, listType);
