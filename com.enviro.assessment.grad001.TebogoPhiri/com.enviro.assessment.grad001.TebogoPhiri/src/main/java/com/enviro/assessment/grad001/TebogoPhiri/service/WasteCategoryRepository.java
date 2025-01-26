@@ -2,12 +2,16 @@
 
     import com.enviro.assessment.grad001.TebogoPhiri.model.WasteCategory;
     import jakarta.annotation.PostConstruct;
+    import netscape.javascript.JSObject;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
     import org.springframework.http.HttpStatus;
     import org.springframework.stereotype.Repository;
     import org.springframework.web.server.ResponseStatusException;
 
     import java.io.File;
     import java.io.IOException;
+    import java.util.ArrayList;
     import java.util.List;
 
     /**
@@ -18,6 +22,7 @@
     public class WasteCategoryRepository {
 
         private static final String FILE_PATH = "waste_categories.json";
+        private static final Logger log = LoggerFactory.getLogger(WasteCategoryRepository.class);
         JSONFileServices jfs = new JSONFileServices();
 
         /**
@@ -26,11 +31,17 @@
          */
         public List<WasteCategory> getAllCategories() {
             try {
-                return jfs.readFromFile(FILE_PATH, WasteCategory.class);
+                List<WasteCategory> categories = jfs.readFromFile(FILE_PATH, WasteCategory.class);
+
+                if (categories == null || categories.isEmpty()) {
+                    return new ArrayList<>(); // Return an empty list if no data is present
+                }
+                return categories;
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to read from JSON file", e);
             }
         }
+
 
         /**
          * Find a WasteCategory by its ID.
@@ -39,7 +50,7 @@
          * @return The WasteCategory object if found.
          * @throws ResponseStatusException if the category is not found.
          */
-        public WasteCategory findById(Integer id) {
+        public WasteCategory    findById(Integer id) {
             List<WasteCategory> categories = getAllCategories();
             for (WasteCategory category : categories) {
                 if (category.getId().equals(id)) {
@@ -51,15 +62,24 @@
 
         /**
          * Create a new WasteCategory and save it to the JSON file.
-         * @param category The WasteCategory to create.
+         * @param newCategory The WasteCategory to create.
          */
-        public void create(WasteCategory category) {
-            if (category.getId() == null || category.getName() == null || category.getDescription() == null) {
+        public void create(WasteCategory newCategory) {
+            if (newCategory.getId() == null || newCategory.getName() == null || newCategory.getDescription() == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid WasteCategory: ID, Name, and Description must not be null");
             }
-
             List<WasteCategory> categories = getAllCategories();
-            categories.add(category);
+            WasteCategory categoryFound = null;
+            try{
+                categoryFound = findById(newCategory.getId());
+            }
+            catch (ResponseStatusException e) {
+                categories.add(newCategory);
+            }
+            if (categoryFound != null) {
+                throw new ResponseStatusException(HttpStatus.FOUND, "WasteCategory with ID " + categoryFound.getId() + " already exist");
+            }
+
 
             try {
                 jfs.saveToFile(categories,FILE_PATH);
@@ -68,6 +88,7 @@
             }
         }
 
+
         /**
          * Update an existing WasteCategory by its ID.
          * @param updatedCategory The updated WasteCategory data.
@@ -75,21 +96,18 @@
          */
         public void update(WasteCategory updatedCategory, Integer id) {
             List<WasteCategory> categories = getAllCategories();
-            boolean found = false;
+            WasteCategory categoryFound = null;
+            try{
+                categoryFound = findById(id); // using already existing code.
+                int index = categories.indexOf(categoryFound);
+                updatedCategory.setId(id); // Ensure the ID remains the same
+                categories.set(index, updatedCategory);
 
-            for (int i = 0; i < categories.size(); i++) {
-                WasteCategory category = categories.get(i);
-                if (category.getId().equals(id)) {
-                    updatedCategory.setId(id); // Ensure the ID remains the same
-                    categories.set(i, updatedCategory);
-                    found = true;
-                    break;
-                }
             }
-
-            if (!found) {
+            catch (ResponseStatusException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "WasteCategory with ID " + id + " not found");
             }
+
 
             try {
                 jfs.saveToFile(categories,FILE_PATH);
@@ -104,18 +122,10 @@
          */
         public void delete(Integer id) {
             List<WasteCategory> categories = getAllCategories();
-            boolean found = false;
-
-            for (int i = 0; i < categories.size(); i++) {
-                WasteCategory category = categories.get(i);
-                if (category.getId().equals(id)) {
-                    categories.remove(i);
-                    found = true;
-                    break;
-                }
+            try{
+                categories.remove(findById(id));
             }
-
-            if (!found) {
+            catch (ResponseStatusException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "WasteCategory with ID " + id + " not found");
             }
 
@@ -130,20 +140,37 @@
          * Initialize the JSON file with sample data if it doesn't exist.
          */
         @PostConstruct
-        private void init() {
+        private void init() throws IOException {
             File file = new File(FILE_PATH);
             if (!file.exists()) {
-                List<WasteCategory> sampleData = List.of(
-                        new WasteCategory(1, "Plastic Waste", "Non-biodegradable synthetic materials."),
-                        new WasteCategory(2, "Organic Waste", "Biodegradable waste from plants and animals."),
-                        new WasteCategory(3, "Electronic Waste", "Old or discarded electronic devices such as computers and phones.")
-                );
-                try {
-                    jfs.saveToFile(sampleData,FILE_PATH);
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to initialize JSON file", e);
+                System.out.println("File " + FILE_PATH + " does not exist");
+                populate(jfs,file.getPath());}
+            if (file.exists()){
+                List<WasteCategory> categories = getAllCategories();
+                // Return an empty list if the file content is empty or null
+                if (categories == null || categories.isEmpty()) {
+                    System.out.println("Content Empty");
+                    populate(jfs,file.getPath());
                 }
+
+
+            }
+
+
+        }
+        private void populate(JSONFileServices jfs,String filePath){
+            List<WasteCategory> sampleData = List.of(
+                    new WasteCategory(1, "Plastic Waste", "Non-biodegradable synthetic materials."),
+                    new WasteCategory(2, "Organic Waste", "Biodegradable waste from plants and animals."),
+                    new WasteCategory(3, "Electronic Waste", "Old or discarded electronic devices such as computers and phones.")
+            );
+            try {
+                jfs.saveToFile(sampleData,filePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to initialize JSON file", e);
             }
         }
-
     }
+
+
+

@@ -117,4 +117,18 @@ class JSONFileServicesTest {
         assertTrue(file.exists(), "File should be created successfully.");
         assertTrue(file.length() > 0, "File should not be empty, as it should contain valid JSON.");
     }
+    @Test
+    void testReadFromFileEmptyFile() throws IOException {
+        // Arrange: Create an empty file
+        File file = new File(testFilePath);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        List<WasteCategory> result = jsonFileServices.readFromFile(testFilePath, WasteCategory.class);
+
+        // Asserts
+        assertNotNull(result, "Result should not be null.");
+        assertTrue(result.isEmpty(), "Result should be an empty list for an empty file.");
+    }
 }
