@@ -1,7 +1,11 @@
 package com.enviro.assessment.grad001.TebogoPhiri.service;
 
 import com.enviro.assessment.grad001.TebogoPhiri.model.WasteCategory;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,14 +14,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class JSONFileServicesTest {
 
-    private final JSONFileServices jsonFileServices = new JSONFileServices();
+    @Autowired
+    private JSONFileServices jsonFileServices; // Inject the JSONFileServices bean
+
     private final String testFilePath = "test-waste-categories.json";
 
     @AfterEach
     void cleanUp() {
-        // Clean up the test file after each test
+        // Delete the test file after each test
         File file = new File(testFilePath);
         if (file.exists()) {
             file.delete();
