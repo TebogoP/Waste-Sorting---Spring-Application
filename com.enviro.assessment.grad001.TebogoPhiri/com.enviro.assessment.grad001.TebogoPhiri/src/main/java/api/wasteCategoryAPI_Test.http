@@ -1,0 +1,31 @@
+### Find ALl Waste Categories
+GET http://localhost:8081/api/waste-category
+
+### Find Waste Category By ID
+GET http://localhost:8081/api/waste-category/4
+
+### Find Waste Category By ID that doesn't exist
+GET http://localhost:8081/api/waste-category/33
+
+### Create new Waste Category
+POST http://localhost:8081/api/waste-category
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "Glass Waste",
+  "description": "Waste made of glass, including broken glassware and bottles."
+}
+
+### Update an existing Run
+PUT http://localhost:8081/api/waste-category/5
+Content-Type: application/json
+
+{
+  "id": 20,
+  "name": "Food Waste",
+  "description": "Discarded food materials from households, restaurants, and food production facilities."
+}
+
+### Delete a Run
+DELETE http://localhost:8081/api/waste-category/4
