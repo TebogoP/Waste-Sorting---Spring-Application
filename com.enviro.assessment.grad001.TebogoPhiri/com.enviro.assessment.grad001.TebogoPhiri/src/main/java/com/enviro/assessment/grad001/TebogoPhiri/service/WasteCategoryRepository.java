@@ -96,21 +96,27 @@
          */
         public void update(WasteCategory updatedCategory, Integer id) {
             List<WasteCategory> categories = getAllCategories();
-            WasteCategory categoryFound = null;
-            try{
-                categoryFound = findById(id); // using already existing code.
-                int index = categories.indexOf(categoryFound);
-                updatedCategory.setId(id); // Ensure the ID remains the same
-                categories.set(index, updatedCategory);
+            List<WasteCategory> newCategories = new ArrayList<>();
+                // Try to find and remove the category
+                try {
+                    WasteCategory existingWasteCategory = findById(id);
+                    for (WasteCategory category : categories) {
+                        if (category.getId().equals(existingWasteCategory.getId())) {
+                            updatedCategory.setId(id);
+                            newCategories.add(updatedCategory);
+                            // Directly remove the found category
+                        }else {
+                            newCategories.add(category);
+                        }
+                    }
 
             }
             catch (ResponseStatusException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "WasteCategory with ID " + id + " not found");
             }
 
-
             try {
-                jfs.saveToFile(categories,FILE_PATH);
+                jfs.saveToFile(newCategories,FILE_PATH);
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update WasteCategory in JSON file", e);
             }
@@ -122,19 +128,31 @@
          */
         public void delete(Integer id) {
             List<WasteCategory> categories = getAllCategories();
-            try{
-                categories.remove(findById(id));
-            }
-            catch (ResponseStatusException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "WasteCategory with ID " + id + " not found");
+            List<WasteCategory> newCategories = new ArrayList<>();
+
+            // Try to find and remove the category
+            try {
+                WasteCategory existingWasteCategory = findById(id);
+               for (WasteCategory category : categories) {
+                   if (category.getId().equals(existingWasteCategory.getId())) {
+                       continue; // Directly remove the found category
+                   }
+                   newCategories.add(category);
+               }
+                //categories.remove(existingWasteCategory); /
+                System.out.println("WasteCategory with ID " + id + " has been removed.");
+            } catch (ResponseStatusException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "WasteCategory with ID " + id + " not found", e);
             }
 
+            // Save updated list back to the file
             try {
-                jfs.saveToFile(categories,FILE_PATH);
+                jfs.saveToFile(newCategories, FILE_PATH); // Overwrites the file with updated list
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete WasteCategory from JSON file", e);
             }
         }
+
 
         /**
          * Initialize the JSON file with sample data if it doesn't exist.
