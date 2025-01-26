@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class WasteCategoryServiceTest {
+class WasteCategoryRepositoryTest {
 
-    private WasteCategoryService wasteCategoryService;
+    private WasteCategoryRepository wasteCategoryRepository;
 
     private JSONFileServices mockJSONFileServices;
 
@@ -27,8 +27,8 @@ class WasteCategoryServiceTest {
     void setUp() {
         // Set up the mocked JSONFileServices and inject it manually
         mockJSONFileServices = Mockito.mock(JSONFileServices.class);
-        wasteCategoryService = new WasteCategoryService();
-        wasteCategoryService.jfs = mockJSONFileServices;
+        wasteCategoryRepository = new WasteCategoryRepository();
+        wasteCategoryRepository.jfs = mockJSONFileServices;
     }
 
     @Test
@@ -40,7 +40,7 @@ class WasteCategoryServiceTest {
         );
         when(mockJSONFileServices.readFromFile(FILE_PATH, WasteCategory.class)).thenReturn(categories);
 
-        List<WasteCategory> result = wasteCategoryService.getAllCategories();
+        List<WasteCategory> result = wasteCategoryRepository.getAllCategories();
 
         // Asserts
         assertNotNull(result);
@@ -57,7 +57,7 @@ class WasteCategoryServiceTest {
         );
         when(mockJSONFileServices.readFromFile(FILE_PATH, WasteCategory.class)).thenReturn(categories);
 
-        WasteCategory category = wasteCategoryService.findById(1);
+        WasteCategory category = wasteCategoryRepository.findById(1);
 
         // Asserts
         assertNotNull(category);
@@ -73,7 +73,7 @@ class WasteCategoryServiceTest {
 
         // Asserts
         Exception exception = assertThrows(ResponseStatusException.class, () -> {
-            wasteCategoryService.findById(999);
+            wasteCategoryRepository.findById(999);
         });
         assertEquals("404 NOT_FOUND \"WasteCategory with ID 999 not found\"", exception.getMessage());
     }
@@ -86,7 +86,7 @@ class WasteCategoryServiceTest {
 
         WasteCategory newCategory = new WasteCategory(3, "Glass Waste", "Recyclable glass materials.");
 
-        wasteCategoryService.create(newCategory);
+        wasteCategoryRepository.create(newCategory);
 
         // Asserts
         categories.add(newCategory); // Expected result after creation
@@ -100,7 +100,7 @@ class WasteCategoryServiceTest {
 
         //Asserts
         Exception exception = assertThrows(ResponseStatusException.class, () -> {
-            wasteCategoryService.create(invalidCategory);
+            wasteCategoryRepository.create(invalidCategory);
         });
         assertEquals("400 BAD_REQUEST \"Invalid WasteCategory: ID, Name, and Description must not be null\"", exception.getMessage());
     }
@@ -114,7 +114,7 @@ class WasteCategoryServiceTest {
 
         WasteCategory updatedCategory = new WasteCategory(null, "Updated Waste", "Updated description.");
 
-        wasteCategoryService.update(updatedCategory, 1);
+        wasteCategoryRepository.update(updatedCategory, 1);
 
         // Asserts
         updatedCategory.setId(1);
@@ -132,7 +132,7 @@ class WasteCategoryServiceTest {
 
         //Asserts
         Exception exception = assertThrows(ResponseStatusException.class, () -> {
-            wasteCategoryService.update(updatedCategory, 999);
+            wasteCategoryRepository.update(updatedCategory, 999);
         });
         assertEquals("404 NOT_FOUND \"WasteCategory with ID 999 not found\"", exception.getMessage());
     }
@@ -144,7 +144,7 @@ class WasteCategoryServiceTest {
         categories.add(new WasteCategory(1, "Waste to Remove", "Description to remove."));
         when(mockJSONFileServices.readFromFile(FILE_PATH, WasteCategory.class)).thenReturn(categories);
 
-        wasteCategoryService.delete(1);
+        wasteCategoryRepository.delete(1);
 
         // Asserts
         categories.removeIf(category -> category.getId().equals(1)); // Expected result after deletion
@@ -159,7 +159,7 @@ class WasteCategoryServiceTest {
 
         //Asserts
         Exception exception = assertThrows(ResponseStatusException.class, () -> {
-            wasteCategoryService.delete(999);
+            wasteCategoryRepository.delete(999);
         });
         assertEquals("404 NOT_FOUND \"WasteCategory with ID 999 not found\"", exception.getMessage());
     }
