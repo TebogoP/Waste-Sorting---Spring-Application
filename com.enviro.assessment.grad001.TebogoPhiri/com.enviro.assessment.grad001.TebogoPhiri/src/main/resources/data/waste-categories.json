@@ -1,0 +1,29 @@
+{
+  "waste": [
+    {
+      "id": 1,
+      "name": "Organic Waste",
+      "description": "Biodegradable waste originating from plants, animals, or food."
+    },
+    {
+      "id": 2,
+      "name": "Plastic Waste",
+      "description": "Non-biodegradable waste made from synthetic polymers like plastic bottles and bags."
+    },
+    {
+      "id": 3,
+      "name": "Paper Waste",
+      "description": "Discarded paper materials such as newspapers, cardboard, and office paper."
+    },
+    {
+      "id": 4,
+      "name": "Glass Waste",
+      "description": "Waste made of glass, including broken glassware and bottles."
+    },
+    {
+      "id": 5,
+      "name": "Metal Waste",
+      "description": "Discarded metal materials like aluminum cans, scrap iron, and steel items."
+    }
+  ]
+}

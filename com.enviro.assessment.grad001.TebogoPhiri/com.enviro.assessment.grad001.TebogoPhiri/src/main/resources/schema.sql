@@ -1,5 +1,5 @@
 -- Create table for WasteCategory
-CREATE TABLE IF NOT EXISTS WasteCategory (
+CREATE TABLE IF NOT EXISTS Waste_Category (
     id INT NOT NULL PRIMARY KEY,        -- Primary key,
     name VARCHAR(255) NOT NULL,         -- Waste category name
     description TEXT NOT NULL           -- Description of the waste category
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS WasteCategory (
 );
 
 -- Create table for RecyclingTip
-CREATE TABLE IF NOT EXISTS RecyclingTip (
+CREATE TABLE IF NOT EXISTS Recycling_Tip (
     id INT NOT NULL PRIMARY KEY,        -- Primary key,
     category VARCHAR(255) NOT NULL,     -- Category of the recycling tip
     tip TEXT NOT NULL                   -- Recycling tip description
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS RecyclingTip (
 );
 
 -- Create table for DisposalGuideline
-CREATE TABLE IF NOT EXISTS DisposalGuideline (
+CREATE TABLE IF NOT EXISTS Disposal_Guideline (
     id INT NOT NULL PRIMARY KEY,        -- Primary key,
     wasteType VARCHAR(255) NOT NULL,    -- Type of waste for which the guideline applies
     guideline TEXT NOT NULL             -- Disposal guideline description
