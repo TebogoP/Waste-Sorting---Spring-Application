@@ -1,4 +1,4 @@
-package com.enviro.assessment.grad001.TebogoPhiri.model;
+package com.enviro.assessment.grad001.TebogoPhiri.WasteCategories.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
