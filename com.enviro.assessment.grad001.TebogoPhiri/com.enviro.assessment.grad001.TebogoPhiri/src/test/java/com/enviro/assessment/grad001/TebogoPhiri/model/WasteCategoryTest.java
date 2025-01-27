@@ -1,5 +1,6 @@
 package com.enviro.assessment.grad001.TebogoPhiri.model;
 
+import com.enviro.assessment.grad001.TebogoPhiri.WasteCategories.model.WasteCategory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

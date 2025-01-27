@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "category": "Plastic",
+    "tip": "Rinse recyclable plastics to remove food residue before placing them in the recycling bin."
+  },
+  {
+    "id": 2,
+    "category": "Plastic",
+    "tip": "Check for the recycling symbol and number on plastics to identify recyclable items."
+  },
+  {
+    "id": 3,
+    "category": "Paper",
+    "tip": "Flatten cardboard boxes to save space in recycling bins."
+  },
+  {
+    "id": 4,
+    "category": "Paper",
+    "tip": "Avoid recycling soiled paper, such as pizza boxes with grease stains."
+  },
+  {
+    "id": 5,
+    "category": "Glass",
+    "tip": "Separate glass bottles and jars by color before recycling."
+  },
+  {
+    "id": 6,
+    "category": "Metal",
+    "tip": "Rinse and clean metal cans to prevent contamination in the recycling process."
+  },
+  {
+    "id": 7,
+    "category": "E-Waste",
+    "tip": "Recycle electronics at designated e-waste centers to prevent environmental harm."
+  },
+  {
+    "id": 8,
+    "category": "General",
+    "tip": "Educate yourself about local recycling rules to avoid contaminating recycling bins."
+  },
+  {
+    "id": 9,
+    "category": "General",
+    "tip": "Avoid placing plastic bags in recycling bins, as they can tangle sorting machinery."
+  },
+  {
+    "id": 10,
+    "category": "General",
+    "tip": "Items smaller than a credit card, like bottle caps, are often not recyclable. Check local guidelines."
+  }
+]

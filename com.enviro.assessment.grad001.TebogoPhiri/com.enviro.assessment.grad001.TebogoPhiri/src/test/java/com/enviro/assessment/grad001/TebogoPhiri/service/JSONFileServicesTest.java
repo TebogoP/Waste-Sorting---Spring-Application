@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.TebogoPhiri.service;
 
-import com.enviro.assessment.grad001.TebogoPhiri.model.WasteCategory;
+import com.enviro.assessment.grad001.TebogoPhiri.WasteCategories.model.WasteCategory;
+import com.enviro.assessment.grad001.TebogoPhiri.Generic.JSONFileServices;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

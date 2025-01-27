@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "wasteType": "Plastic Waste",
+    "guideline": "Dispose of plastic bottles and containers in a designated recycling bin."
+  },
+  {
+    "id": 2,
+    "wasteType": "Organic Waste",
+    "guideline": "Compost food scraps and yard waste to create natural fertilizer."
+  },
+  {
+    "id": 3,
+    "wasteType": "Electronic Waste",
+    "guideline": "Take old electronics to an e-waste recycling center."
+  },
+  {
+    "id": 4,
+    "wasteType": "Glass Waste",
+    "guideline": "Separate glass bottles by color before recycling."
+  },
+  {
+    "id": 5,
+    "wasteType": "Metal Waste",
+    "guideline": "Rinse and clean metal cans before placing them in a recycling bin."
+  },
+  {
+    "id": 6,
+    "wasteType": "Paper Waste",
+    "guideline": "Flatten cardboard boxes before disposal to save space."
+  },
+  {
+    "id": 7,
+    "wasteType": "Hazardous Waste",
+    "guideline": "Dispose of batteries and paint at authorized hazardous waste facilities."
+  },
+  {
+    "id": 8,
+    "wasteType": "Medical Waste",
+    "guideline": "Place sharps (like needles) in puncture-resistant containers before disposal."
+  },
+  {
+    "id": 9,
+    "wasteType": "Construction Waste",
+    "guideline": "Sort concrete, wood, and drywall for proper recycling or disposal."
+  },
+  {
+    "id": 10,
+    "wasteType": "Textile Waste",
+    "guideline": "Donate gently used clothing or repurpose fabric scraps."
+  }
+]
