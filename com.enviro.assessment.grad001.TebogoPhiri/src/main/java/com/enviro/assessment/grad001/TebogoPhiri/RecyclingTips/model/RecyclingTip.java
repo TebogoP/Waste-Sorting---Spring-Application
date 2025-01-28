@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
 
 public class RecyclingTip {
     public RecyclingTip() {
@@ -13,17 +14,18 @@ public class RecyclingTip {
         setTip(tip);
         setCategory(category);
     }
+    @Id
     @NotNull(message = "ID cannot be null")
     @Positive(message = "ID should not be negative")
     private Integer id;
 
 
-    @NotBlank(message = "Name cannot be blank")
-    @Size(max = 100, message = "Name cannot exceed 100 characters")
+    @NotBlank(message = "Tip cannot be blank")
+    @Size(max = 100, message = "Tip cannot exceed 100 characters")
     private String tip;
 
-    @NotBlank(message = "category cannot be blank")
-    @Size(max = 255, message = "category cannot exceed 255 characters")
+    @NotBlank(message = "Category cannot be blank")
+    @Size(max = 255, message = "Category cannot exceed 255 characters")
     private String category;
 
     public Integer getId() {
@@ -49,8 +51,8 @@ public class RecyclingTip {
     public String toString() {
         return "{" +
                 "\"id\": " + id + ", " +
-                "\"name\": \"" + tip + "\", " +
-                "\"description\": \"" + category + "\"" +
+                "\"tip\": \"" + tip + "\", " +
+                "\"category\": \"" + category + "\"" +
                 "}";
     }
 }

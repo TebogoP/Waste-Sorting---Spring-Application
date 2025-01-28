@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
 
 public class DisposalGuideline  {
     public DisposalGuideline () {
@@ -13,6 +14,7 @@ public class DisposalGuideline  {
         setGuideline(guideline);
         setWasteType(wasteType);
     }
+    @Id
     @NotNull(message = "ID cannot be null")
     @Positive(message = "ID should not be negative")
     private Integer id;
@@ -49,7 +51,7 @@ public class DisposalGuideline  {
         return "{" +
                 "\"id\": " + id + ", " +
                 "\"wasteType\": \"" + wasteType + "\"," +
-                "\"guideline\": \"" + guideline + "\" " +
+                "\"guideline\": \"" + guideline + "\"" +
                 "}";
     }
 }
