@@ -1,7 +1,7 @@
-package com.enviro.assessment.grad001.TebogoPhiri.WasteCategories.model;
+package com.enviro.assessment.grad001.TebogoPhiri.DisposalGuidelines.model;
 
 import java.util.List;
-public record WasteCategories(List<WasteCategory> waste) {
+public record DisposalGuidelines (List<DisposalGuideline> disposal) {
     /*Record is immuntable(unchangable)
      * Record has its own toString, hasCode, equals, getters (no setters)
      * Record Automatically generates a constructor
@@ -16,9 +16,9 @@ public record WasteCategories(List<WasteCategory> waste) {
      * Use classes when you need full flexibility, complex behavior, or mutability.
      * */
 
-    public WasteCategories {
-        if (waste == null) {
-            throw new IllegalArgumentException("Waste categories list cannot be null");
+    public DisposalGuidelines {
+        if (disposal == null) {
+            throw new IllegalArgumentException("Disposal guidelines list cannot be null");
         }
     }
 }
