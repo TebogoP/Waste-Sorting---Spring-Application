@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(WasteCatController.class)
-class WasteCatControllerTest {
+class WasteCateControlTest {
 
     @Autowired
     private MockMvc mockMvc;
